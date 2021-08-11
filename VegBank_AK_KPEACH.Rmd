@@ -100,6 +100,8 @@ VegBank_plot_data_AK2 <- VegBank_plot_data_AK %>%
 #While there is a column for USDA code, it is blank for all sites : ()
 VegBank_plot_species_list_AK2 <- VegBank_plot_species_list_AK %>%
   select('authorObsCode', 'currentTaxonNameWithSp', 'cover', 'taxon_growthForm_short', 'taxon_woody', 'taxon_exotic',  'taxon_usda_code', 'taxon_woody') %>%
+  #Lais added the next line of code to drag the original species n
+  mutate(OriginalName = currentTaxonNameWithSp) %>%
   rename( 'VegBankUniqueID' = 'authorObsCode','bestname' = 'currentTaxonNameWithSp', 'PctCov' = 'cover', 'SpCode' = 'taxon_usda_code', 'ExoticStatus' = 'taxon_exotic', 'GrowthForm' = 'taxon_growthForm_short', 'Woodiness' = 'taxon_woody')
 
 VegBank_AK <- left_join(VegBank_plot_data_AK2, VegBank_plot_species_list_AK2, by = 'VegBankUniqueID')
@@ -417,7 +419,7 @@ Saving reduced file locally and on the server
 ```{r}
 
 #As csv
-write.csv(VegBank_AK6,"/home/shares/neon-inv/output_files/VegBank_AK_KPEACH_reduced.csv", row.names = FALSE)
+write.csv(VegBank_AK6,"/home/shares/neon-inv/output_files/VegBank_AK_KPEACH_LP_reduced.csv", row.names = FALSE)
 
 write.csv(VegBank_AK6,"VegBank_AK_KPEACH_reduced.csv", row.names = FALSE)
 
