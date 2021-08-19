@@ -1,6 +1,8 @@
 ---
 title: "Merge_VegBank_data"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -23,36 +25,44 @@ shared_data_dir <- "/home/shares/neon-inv"
 data_raw <- file.path(shared_data_dir, "raw_VegBank_data")
 data_output <- file.path(shared_data_dir, "output_files")
 
-VegBank_AK_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_AK_KPEACH_reduced.csv"))
+VegBank_AK_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_AK_KPEACH_LP_reduced.csv"))
 
-VegBank_AL_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_AL_KPEACH_reduced.csv"))
+VegBank_AL_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_AL_KPEACH_LP_reduced.csv"))
 
-VegBank_FL_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_FL_KPEACH_reduced.csv"))
+VegBank_FL_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_FL_KPEACH_LP_reduced.csv"))
 
-VegBank_GA_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_GA_KPEACH_reduced.csv"))
+VegBank_GA_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_GA_KPEACH_LP_reduced.csv"))
 
-VegBank_MS_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_MS_KPEACH_reduced.csv"))
+VegBank_MS_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_MS_KPEACH_LP_reduced.csv"))
 
-VegBank_NC_coastal_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_NC_coastal_KPEACH_reduced.csv"))
+VegBank_NC_coastal_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_NC_coastal_KPEACH_LP_reduced.csv"))
 
-VegBank_NC_fringe_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_NC_fringe_KPEACH_reduced.csv"))
+VegBank_NC_fringe_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_NC_fringe_KPEACH_LP_reduced.csv"))
 
-VegBank_NCMts_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_NCMts_KPEACH_reduced.csv"))
+VegBank_NCMts_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_NCMts_KPEACH_LP_reduced.csv"))
 
-VegBank_NCPP_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_NCPP_KPEACH_reduced.csv"))
+VegBank_NCPP_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_NCPP_KPEACH_LP_reduced.csv"))
 
-VegBank_Proj129_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_Proj129_KPEACH_reduced.csv"))
+VegBank_Proj129_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_Proj129_KPEACH_LP_reduced.csv"))
 
-VegBank_SC_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_SC_KPEACH_reduced.csv"))
+VegBank_SC_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_SC_KPEACH_LP_reduced.csv"))
 
-VegBank_TN_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_TN_KPEACH_reduced.csv"))
+VegBank_TN_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_TN_KPEACH_LP_reduced.csv"))
 
-VegBank_TX_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_TX_KPEACH_reduced.csv"))
+VegBank_TX_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_TX_KPEACH_LP_reduced.csv"))
 
-VegBank_VA_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_VA_KPEACH_reduced.csv"))
+VegBank_VA_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_VA_KPEACH_LP_reduced.csv"))
 
-NCVS_WV_EB_reduced <- read_csv(file.path(data_output, "NCVS_WV_KPEACH_EB_reduced.csv"))
+NCVS_WV_EB_reduced <- read_csv(file.path(data_output, "NCVS_WV_KPEACH_EB_LP_reduced.csv"))
 
+
+```
+
+```{r}
+##Lais added: renames column to match the remaining datasets
+NCVS_WV_EB_reduced <- NCVS_WV_EB_reduced %>%
+  rename(OriginalName = NCVS_original_scientific_name)
+glimpse(NCVS_WV_EB_reduced)
 
 ```
 
@@ -120,7 +130,7 @@ check = All_VegBank_KPEACH_reduced %>% mutate(check = paste(UniqueID, SpCode, se
 
 # looks like most are issues with varieties/subspecies reduced to same code, and missing info in woodiness column
 # reduce to one measure of cover per species per plot
-All_VegBank_KPEACH_reduced2 = All_VegBank_KPEACH_reduced %>% select(-Woodiness) %>% ungroup() %>% group_by(Dataset, Zone, Year, Lat, Long, `Taxon Observation Area`, bestname, SpCode, ExoticStatus, ExoticStatus_Origin, Duration, GrowthForm, UniqueID, VegBankUniqueID, `Public Latitude`, `Public Longitude`, `Sampling Level`) %>%
+All_VegBank_KPEACH_reduced2 = All_VegBank_KPEACH_reduced %>% select(-Woodiness) %>% ungroup() %>% group_by(Dataset, Zone, Year, Lat, Long, `Taxon Observation Area`, bestname, SpCode, ExoticStatus, ExoticStatus_Origin, Duration, GrowthForm, UniqueID, VegBankUniqueID, `Public Latitude`, `Public Longitude`, `Sampling Level`, OriginalName) %>% ##Lais added the column of OriginalNames
   summarise(PctCov = sum(PctCov)) # reduced about 200 rows
 
 duplicates <- All_VegBank_KPEACH_reduced2 %>% ungroup() %>% group_by(Dataset, UniqueID, SpCode) %>% summarise(n_obs = n()) %>% filter(n_obs > 1)
@@ -282,7 +292,7 @@ Join back to AllVeg and clean up
 All_VegBank_KPEACH_reduced5 = left_join(All_VegBank_KPEACH_reduced4, fix_join, by="SpCode")
 glimpse(All_VegBank_KPEACH_reduced5)
 
-All_VegBank_KPEACH_reduced6 = All_VegBank_KPEACH_reduced5 %>% mutate(bestname = ifelse(is.na(bestname.y), bestname.x, bestname.y),Duration = ifelse(is.na(USDA_Duration), Duration, USDA_Duration),GrowthForm = ifelse(is.na(USDA_Growth_Form), GrowthForm, USDA_Growth_Form),ExoticStatus = ifelse(is.na(NEW_ExoticStatus), ExoticStatus, NEW_ExoticStatus),ExoticStatus_Origin = ifelse(is.na(ExoticStatus_Origin.y), ExoticStatus_Origin.x, ExoticStatus_Origin.y)) %>% select(-c(bestname.x, bestname.y,USDA_Duration, NEW_ExoticStatus, USDA_Growth_Form, ExoticStatus_Origin.x, ExoticStatus_Origin.y))
+All_VegBank_KPEACH_reduced6 = All_VegBank_KPEACH_reduced5 %>% mutate(bestname = ifelse(is.na(bestname.y), bestname.x, bestname.y),Duration = ifelse(is.na(USDA_Duration), Duration, USDA_Duration),GrowthForm = ifelse(is.na(USDA_Growth_Form), GrowthForm, USDA_Growth_Form),ExoticStatus = ifelse(is.na(NEW_ExoticStatus), ExoticStatus, NEW_ExoticStatus),ExoticStatus_Origin = ifelse(is.na(ExoticStatus_Origin.y), ExoticStatus_Origin.x, ExoticStatus_Origin.y),) %>% select(-c(bestname.x, bestname.y,USDA_Duration, NEW_ExoticStatus, USDA_Growth_Form, ExoticStatus_Origin.x, ExoticStatus_Origin.y))
 
 ```
 
@@ -318,7 +328,7 @@ Export
 
 
   #As csv
-write.csv(All_VegBank_KPEACH_reduced7,"/home/shares/neon-inv/output_files/All_VegBank_KPEACH_EB_reduced.csv", row.names = FALSE)
+write.csv(All_VegBank_KPEACH_reduced7,"/home/shares/neon-inv/output_files/All_VegBank_KPEACH_EB_LP_reduced.csv", row.names = FALSE)
 
 #write.csv(All_VegBank_KPEACH_reduced7,"All_VegBank_KPEACH_EB_reduced.csv", row.names = FALSE)
 
