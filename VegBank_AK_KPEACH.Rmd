@@ -100,7 +100,7 @@ VegBank_plot_data_AK2 <- VegBank_plot_data_AK %>%
 #While there is a column for USDA code, it is blank for all sites : ()
 VegBank_plot_species_list_AK2 <- VegBank_plot_species_list_AK %>%
   select('authorObsCode', 'currentTaxonNameWithSp', 'cover', 'taxon_growthForm_short', 'taxon_woody', 'taxon_exotic',  'taxon_usda_code', 'taxon_woody') %>%
-  #Lais added the next line of code to drag the original species n
+  #Lais added the next line of code to drag the original species names
   mutate(OriginalName = currentTaxonNameWithSp) %>%
   rename( 'VegBankUniqueID' = 'authorObsCode','bestname' = 'currentTaxonNameWithSp', 'PctCov' = 'cover', 'SpCode' = 'taxon_usda_code', 'ExoticStatus' = 'taxon_exotic', 'GrowthForm' = 'taxon_growthForm_short', 'Woodiness' = 'taxon_woody')
 
@@ -411,6 +411,9 @@ VegBank_AK6 <- VegBank_AK5 %>%
 #Just using this to see if any rows are dropped because there is no latitute and longitude. There really ought to be lat and long so just trying to catch that here
 VegBank_AK6 <- VegBank_AK6 %>% drop_na(Lat)
 
+#Lais adding code to get unique species id per plot (some state files had the same species twice, and I couldn't find why; so I am adding this line of code to all codes)
+VegBank_AK6_LP <- VegBank_AK6 %>%
+  distinct(VegBankUniqueID, bestname, .keep_all = TRUE)
 
 ```
 
@@ -419,9 +422,9 @@ Saving reduced file locally and on the server
 ```{r}
 
 #As csv
-write.csv(VegBank_AK6,"/home/shares/neon-inv/output_files/VegBank_AK_KPEACH_LP_reduced.csv", row.names = FALSE)
+write.csv(VegBank_AK6_LP,"/home/shares/neon-inv/output_files/VegBank_AK_KPEACH_LP_reduced.csv", row.names = FALSE)
 
-write.csv(VegBank_AK6,"VegBank_AK_KPEACH_reduced.csv", row.names = FALSE)
+#write.csv(VegBank_AK6,"VegBank_AK_KPEACH_reduced.csv", row.names = FALSE)
 
 
 ```

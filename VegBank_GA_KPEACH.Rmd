@@ -87,6 +87,8 @@ VegBank_plot_data_GA2 <- VegBank_plot_data_GA %>%
 
 VegBank_plot_species_list_GA2 <- VegBank_plot_species_list_GA %>%
   select('authorObsCode', 'currentTaxonNameWithSp', 'cover', 'taxon_growthForm_short', 'taxon_woody', 'taxon_exotic',  'taxon_usda_code', 'taxon_woody') %>%
+  #Lais added the next line of code to drag the original species n
+  mutate(OriginalName = currentTaxonNameWithSp) %>%
   rename( 'VegBankUniqueID' = 'authorObsCode','bestname' = 'currentTaxonNameWithSp', 'PctCov' = 'cover', 'SpCode' = 'taxon_usda_code', 'ExoticStatus' = 'taxon_exotic', 'GrowthForm' = 'taxon_growthForm_short', 'Woodiness' = 'taxon_woody')
 
 VegBank_GA <- left_join(VegBank_plot_data_GA2, VegBank_plot_species_list_GA2, by = 'VegBankUniqueID')
@@ -96,6 +98,7 @@ unique(VegBank_GA$`Sampling Level`)
 
 
 ```
+
 ```{r}
 
 #Reducing sampling date to just the year to match NEON data
@@ -498,9 +501,13 @@ VegBank_GA6 <- VegBank_GA5 %>%
 #Just using this to see if any rows are dropped because there is no latitute and longitude. There really ought to be lat and long so just trying to catch that here
 VegBank_GA6 <- VegBank_GA6 %>% drop_na(Lat)
 
-#As csv
-write.csv(VegBank_GA6,"/home/shares/neon-inv/output_files/VegBank_GA_KPEACH_reduced.csv", row.names = FALSE)
+#Lais adding code to get unique species id per plot (some state files had the same species twice, and I couldn't find why; so I am adding this line of code to all codes)
+VegBank_GA6_LP <- VegBank_GA6 %>%
+  distinct(VegBankUniqueID, bestname, .keep_all = TRUE)
 
-write.csv(VegBank_GA6,"VegBank_GA_KPEACH_reduced.csv", row.names = FALSE)
+#As csv
+write.csv(VegBank_GA6_LP,"/home/shares/neon-inv/output_files/VegBank_GA_KPEACH_LP_reduced.csv", row.names = FALSE)
+
+#write.csv(VegBank_GA6,"VegBank_GA_KPEACH_reduced.csv", row.names = FALSE)
 
 ```

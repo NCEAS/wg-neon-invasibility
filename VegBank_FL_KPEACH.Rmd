@@ -87,6 +87,8 @@ VegBank_plot_data_FL2 <- VegBank_plot_data_FL %>%
 
 VegBank_plot_species_list_FL2 <- VegBank_plot_species_list_FL %>%
   select('authorObsCode', 'currentTaxonNameWithSp', 'cover', 'taxon_growthForm_short', 'taxon_woody', 'taxon_exotic',  'taxon_usda_code', 'taxon_woody') %>%
+  #Lais added the next line of code to drag the original species n
+  mutate(OriginalName = currentTaxonNameWithSp) %>%
   rename( 'VegBankUniqueID' = 'authorObsCode','bestname' = 'currentTaxonNameWithSp', 'PctCov' = 'cover', 'SpCode' = 'taxon_usda_code', 'ExoticStatus' = 'taxon_exotic', 'GrowthForm' = 'taxon_growthForm_short', 'Woodiness' = 'taxon_woody')
 
 VegBank_FL <- left_join(VegBank_plot_data_FL2, VegBank_plot_species_list_FL2, by = 'VegBankUniqueID')
@@ -602,9 +604,13 @@ VegBank_FL6 <- VegBank_FL5 %>%
 #Just using this to see if any rows are dropped because there is no latitute and longitude. There really ought to be lat and long so just trying to catch that here
 VegBank_FL6 <- VegBank_FL6 %>% drop_na(Lat)
 
-#As csv
-write.csv(VegBank_FL6,"/home/shares/neon-inv/output_files/VegBank_FL_KPEACH_reduced.csv", row.names = FALSE)
+#Lais adding code to get unique species id per plot (some had the same species twice, and I couldn't find why)
+VegBank_FL6_LP <- VegBank_FL6 %>%
+  distinct(VegBankUniqueID, bestname, .keep_all = TRUE)
 
-write.csv(VegBank_FL6,"VegBank_FL_KPEACH_reduced.csv", row.names = FALSE)
+#As csv
+write.csv(VegBank_FL6_LP,"/home/shares/neon-inv/output_files/VegBank_FL_KPEACH_LP_reduced.csv", row.names = FALSE)
+
+#write.csv(VegBank_FL6,"VegBank_FL_KPEACH_reduced.csv", row.names = FALSE)
 
 ```
