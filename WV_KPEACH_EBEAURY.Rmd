@@ -432,14 +432,16 @@ WestVirginia_comp3 <- WestVirginia_comp2 %>%
 WestVirginia_comp3 <- WestVirginia_comp3  %>% drop_na(Lat)
 
 # Condense strata to one species cover measure per plot
-WestVirginia_comp4  <- WestVirginia_comp3 %>% group_by(Dataset, Zone, UniqueID, Year, Lat, Long, SpCode, Duration, GrowthForm, ExoticStatus, ExoticStatus_Origin, bestname, `Taxon Observation Area`) %>%
+##Lais kept the column of original names (checked the data, and adding it did not change the dataset content - no extra duplicates because of it)
+WestVirginia_comp4  <- WestVirginia_comp3 %>% group_by(Dataset, Zone, UniqueID, Year, Lat, Long, SpCode, Duration, GrowthForm, ExoticStatus, ExoticStatus_Origin, bestname, `Taxon Observation Area`, NCVS_original_scientific_name) %>%
   summarise(PctCov = sum(PctCov)) # reduced a ton of rows
 range(WestVirginia_comp4$PctCov, na.rm=T) # absolute cover 
 # drop one row with an NA for cover
 WestVirginia_comp4 = WestVirginia_comp4 %>% filter(!is.na(PctCov))
 
+
 #As csv
-write.csv(WestVirginia_comp4 ,"/home/shares/neon-inv/output_files/NCVS_WV_KPEACH_EB_reduced.csv", row.names = FALSE)
+write.csv(WestVirginia_comp4 ,"/home/shares/neon-inv/output_files/NCVS_WV_KPEACH_EB_LP_reduced.csv", row.names = FALSE)
 
 #write.csv(WestVirginia_comp4 ,"NCVS_WV_KPEACH_reduced.csv", row.names = FALSE)
 
