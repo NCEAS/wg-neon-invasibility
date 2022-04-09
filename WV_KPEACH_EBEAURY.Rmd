@@ -2,7 +2,8 @@
 title: "West_Virginia_KPEACH"
 output: html_document
 notes: "Eve Beaury started editing 4/17/2021 to incorporate more edits (particularly to taxnonomy, which was fixed outside of R in excel and then joined to the most recent datasheet Kristen had exopoted for WV. IMPORTANT: This is saved to the nceas servor but not synced to Kristen's git (I don't have permission)"
-
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -125,9 +126,10 @@ unique(WestVirginia$Stratum)
 
 WestVirginia$Stratum <- as.character(WestVirginia$Stratum)
 
-WestVirginia <- WestVirginia %>% filter(Stratum != "T")
+#LP: T stands for trees and N stands for non-vascular. I am keeping them as in the other datasets they were actually kept for the database
+# WestVirginia <- WestVirginia %>% filter(Stratum != "T")
 
-WestVirginia <- WestVirginia %>% filter(Stratum != "N")
+# WestVirginia <- WestVirginia %>% filter(Stratum != "N")
 
 
 ```
@@ -417,7 +419,7 @@ Exporting full data table
 ```{r}
 
 #As csv
-write.csv(WestVirginia_comp2,"/home/shares/neon-inv/output_files/NCVS_WV_KPEACH_EB_ALL_COLS.csv", row.names = FALSE)
+write.csv(WestVirginia_comp2,"/home/shares/neon-inv/output_files/NCVS_WV_KPEACH_EB_LP2_ALL_COLS.csv", row.names = FALSE)
 
 ```
 
@@ -441,7 +443,7 @@ WestVirginia_comp4 = WestVirginia_comp4 %>% filter(!is.na(PctCov))
 
 
 #As csv
-write.csv(WestVirginia_comp4 ,"/home/shares/neon-inv/output_files/NCVS_WV_KPEACH_EB_LP_reduced.csv", row.names = FALSE)
+write.csv(WestVirginia_comp4 ,"/home/shares/neon-inv/output_files/NCVS_WV_KPEACH_EB_LP_reduced2.csv", row.names = FALSE)
 
 #write.csv(WestVirginia_comp4 ,"NCVS_WV_KPEACH_reduced.csv", row.names = FALSE)
 
