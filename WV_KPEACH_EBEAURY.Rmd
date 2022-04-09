@@ -83,7 +83,9 @@ Plot_data_WV2 <- Plot_data_WV %>%
 
 Plot_species_list_WV2 <- Plot_species_list_WV %>%
   select('Plot Code', 'Scientific Name', 'Stratum', 'Real Cover', 'Uncertain ID?', 'Plant Symbol') %>%
-  rename( 'UniqueID' = 'Plot Code','bestname' = 'Scientific Name', 'PctCov' = 'Real Cover', 'SpCode' = 'Plant Symbol') %>% filter('Uncertain ID?' != TRUE) %>% select(-'Uncertain ID?')
+  mutate(bestname = 'Scientific Name') %>% 
+  rename( 'UniqueID' = 'Plot Code', 'PctCov' = 'Real Cover', 'SpCode' = 'Plant Symbol',
+          'ORIGINAL.NAME' = 'Scientific Name') %>% filter('Uncertain ID?' != TRUE) %>% select(-'Uncertain ID?')
 
 WestVirginia <- left_join(Plot_data_WV2 , Plot_species_list_WV2, by = 'UniqueID')
 
@@ -395,7 +397,8 @@ WestVirginia_comp2 = left_join(WestVirginia_comp, missing_new %>% select(-bestna
          Duration = ifelse(is.na(USDA_Duration), Duration, USDA_Duration),
          ExoticStatus = ifelse(is.na(NEW_ExoticStatus), ExoticStatus, NEW_ExoticStatus),
          GrowthForm = ifelse(is.na(USDA_Growth_Form), GrowthForm, USDA_Growth_Form)) %>%
-  rename(NCVS_original_scientific_name = bestname.x) %>% select(-bestname.y, USDA_Duration)
+  # rename(NCVS_original_scientific_name = bestname.x) %>% 
+  select(-bestname.y, USDA_Duration)
 glimpse(WestVirginia_comp2)
 sum(is.na(WestVirginia_comp2$ExoticStatus))
 
@@ -435,7 +438,7 @@ WestVirginia_comp3 <- WestVirginia_comp3  %>% drop_na(Lat)
 
 # Condense strata to one species cover measure per plot
 ##Lais kept the column of original names (checked the data, and adding it did not change the dataset content - no extra duplicates because of it)
-WestVirginia_comp4  <- WestVirginia_comp3 %>% group_by(Dataset, Zone, UniqueID, Year, Lat, Long, SpCode, Duration, GrowthForm, ExoticStatus, ExoticStatus_Origin, bestname, `Taxon Observation Area`, NCVS_original_scientific_name) %>%
+WestVirginia_comp4  <- WestVirginia_comp3 %>% group_by(Dataset, Zone, UniqueID, Year, Lat, Long, SpCode, Duration, GrowthForm, ExoticStatus, ExoticStatus_Origin, bestname, `Taxon Observation Area`, ORIGINAL.NAME) %>%
   summarise(PctCov = sum(PctCov)) # reduced a ton of rows
 range(WestVirginia_comp4$PctCov, na.rm=T) # absolute cover 
 # drop one row with an NA for cover
