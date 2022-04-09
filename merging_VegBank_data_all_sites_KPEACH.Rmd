@@ -10,16 +10,18 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-Impo
 
+Packages
 ```{r}
-
 library(readr)
 library(readxl)
 library(here)
 library(tidyverse)
 library(knitr)
+```
 
+Impo
+```{r}
 # Paths to data
 shared_data_dir <- "/home/shares/neon-inv"
 data_raw <- file.path(shared_data_dir, "raw_VegBank_data")
@@ -61,7 +63,7 @@ NCVS_WV_EB_reduced <- read_csv(file.path(data_output, "NCVS_WV_KPEACH_EB_LP_redu
 ```{r}
 ##Lais added: renames column to match the remaining datasets
 NCVS_WV_EB_reduced <- NCVS_WV_EB_reduced %>%
-  rename(OriginalName = NCVS_original_scientific_name)
+  rename(OriginalName = ORIGINAL.NAME)
 glimpse(NCVS_WV_EB_reduced)
 
 ```
