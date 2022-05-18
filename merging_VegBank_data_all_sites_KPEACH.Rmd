@@ -55,7 +55,7 @@ VegBank_TX_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_TX_KPEACH
 
 VegBank_VA_KPEACH_reduced  <- read_csv(file.path(data_output, "VegBank_VA_KPEACH_LP_reduced.csv"))
 
-NCVS_WV_EB_reduced <- read_csv(file.path(data_output, "NCVS_WV_KPEACH_EB_LP_reduced2.csv"))
+NCVS_WV_EB_reduced <- read_csv(file.path(data_output, "NCVS_WV_KPEACH_EB_LP_reduced2_05182022.csv"))
 
 
 ```
@@ -329,7 +329,7 @@ Export
 
 
   #As csv
-write.csv(All_VegBank_KPEACH_reduced7,"/home/shares/neon-inv/output_files/All_VegBank_KPEACH_EB_LP_reduced2.csv", row.names = FALSE)
+write.csv(All_VegBank_KPEACH_reduced7,"/home/shares/neon-inv/output_files/All_VegBank_KPEACH_EB_LP_reduced3.csv", row.names = FALSE)
 
 #write.csv(All_VegBank_KPEACH_reduced7,"All_VegBank_KPEACH_EB_reduced.csv", row.names = FALSE)
 
