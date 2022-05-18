@@ -128,8 +128,8 @@ unique(WestVirginia$Stratum)
 
 WestVirginia$Stratum <- as.character(WestVirginia$Stratum)
 
-#LP: T stands for trees and N stands for non-vascular. I am keeping them as in the other datasets they were actually kept for the database
-# WestVirginia <- WestVirginia %>% filter(Stratum != "T")
+#LP: T stands for "total cover for woody species that occur in multiple strata" and N stands for non-vascular. I am keeping them as in the other datasets they were actually kept for the database
+WestVirginia <- WestVirginia %>% filter(Stratum != "T")
 
 # WestVirginia <- WestVirginia %>% filter(Stratum != "N")
 
@@ -446,7 +446,7 @@ WestVirginia_comp4 = WestVirginia_comp4 %>% filter(!is.na(PctCov))
 
 
 #As csv
-write.csv(WestVirginia_comp4 ,"/home/shares/neon-inv/output_files/NCVS_WV_KPEACH_EB_LP_reduced2.csv", row.names = FALSE)
+write.csv(WestVirginia_comp4 ,"/home/shares/neon-inv/output_files/NCVS_WV_KPEACH_EB_LP_reduced2_05182022.csv", row.names = FALSE)
 
 #write.csv(WestVirginia_comp4 ,"NCVS_WV_KPEACH_reduced.csv", row.names = FALSE)
 
